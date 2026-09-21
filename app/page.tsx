@@ -16,6 +16,7 @@ import { DailyReflection } from "../src/components/DailyReflection";
 import { PersonalTahsinNote, INITIAL_TAHSIN_NOTES } from "../src/data/tajweedData";
 import { JournalEntry, MutabaahTask, INITIAL_JOURNAL_ENTRIES, INITIAL_MUTABAAH_CHECKLIST } from "../src/data/journalData";
 import { SAMPLE_PRAYER_TIMES, PrayerTime, fetchStrictPrayerTimes, ADZAN_AUDIO_SOURCES } from "../src/data/adzanData";
+import { PWAInstallBanner } from "../src/components/PWAInstallBanner";
 import {
   BookOpen,
   Layers,
@@ -116,7 +117,11 @@ export default function Home() {
       if (savedLastRead) setLastRead(JSON.parse(savedLastRead));
 
       const savedDark = localStorage.getItem("qalbi_dark_mode");
-      if (savedDark) setDarkMode(JSON.parse(savedDark));
+      if (savedDark !== null) {
+        setDarkMode(JSON.parse(savedDark));
+      } else if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        setDarkMode(true);
+      }
     } catch (err) {
       console.error("Failed to load state from localStorage:", err);
     }
@@ -257,7 +262,10 @@ export default function Home() {
   const nextPrayer = prayerTimes.find((p) => p.isNext) || prayerTimes[2];
 
   return (
-    <div className="min-h-screen bg-islamic-pattern flex flex-col font-sans pb-24 md:pb-12 text-slate-800 dark:text-slate-100">
+    <div className="min-h-screen bg-islamic-pattern flex flex-col font-sans pb-28 md:pb-12 text-slate-800 dark:text-slate-100">
+      {/* PWA Install Banner & Offline Telemetry */}
+      <PWAInstallBanner />
+
       {/* Navbar Shell */}
       <Navbar
         activeTab={activeTab}
@@ -270,7 +278,7 @@ export default function Home() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8">
         
         {/* Framer Motion Animated Home Dashboard Widgets */}
         {activeTab === "reader" && readerViewMode !== "reading" && (
@@ -289,7 +297,7 @@ export default function Home() {
               {/* Card 1: Strict Location Prayer Schedule (2 Span) */}
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="soft-card p-6 bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] space-y-4 lg:col-span-2 shadow-sm"
+                className="soft-card p-4 sm:p-6 bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] space-y-4 lg:col-span-2 shadow-sm"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-[#1E3A2C]">
                   <div>
@@ -308,7 +316,7 @@ export default function Home() {
                   {/* Adzan Quick Play Button */}
                   <button
                     onClick={handleToggleHomeAdzan}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs active:scale-95 ${
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs active:scale-95 ${
                       homePlayingAdzan
                         ? "bg-amber-600 text-white"
                         : "bg-[#1B4332] hover:bg-[#2D6A4F] text-white dark:bg-[#2D6A4F]"
@@ -325,17 +333,17 @@ export default function Home() {
                     <motion.div
                       key={item.name}
                       whileHover={{ scale: 1.03 }}
-                      className={`p-3 rounded-2xl border text-center transition-all ${
+                      className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all ${
                         item.isNext
                           ? "bg-emerald-500 text-white border-emerald-600 shadow-md ring-2 ring-emerald-300"
                           : "bg-[#FAF8F5] dark:bg-[#1E3A2C]/40 border-slate-200 dark:border-[#2A4D3A] text-slate-800 dark:text-slate-100"
                       }`}
                     >
-                      <span className="font-arabic text-lg font-bold block">{item.nameArabic}</span>
-                      <p className={`text-xs font-bold ${item.isNext ? "text-emerald-100" : "text-slate-500"}`}>
+                      <span className="font-arabic text-base sm:text-lg font-bold block">{item.nameArabic}</span>
+                      <p className={`text-[11px] sm:text-xs font-bold ${item.isNext ? "text-emerald-100" : "text-slate-500"}`}>
                         {item.name}
                       </p>
-                      <span className={`text-sm font-extrabold mt-1 block ${item.isNext ? "text-amber-200" : "text-[#1B4332] dark:text-[#74C69D]"}`}>
+                      <span className={`text-xs sm:text-sm font-extrabold mt-1 block ${item.isNext ? "text-amber-200" : "text-[#1B4332] dark:text-[#74C69D]"}`}>
                         {item.time}
                       </span>
                     </motion.div>
@@ -346,7 +354,7 @@ export default function Home() {
               {/* Card 2: Interactive To-Do List Worship Tracker (1 Span) */}
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="soft-card p-6 bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] space-y-4 shadow-sm"
+                className="soft-card p-4 sm:p-6 bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] space-y-4 shadow-sm"
               >
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1E3A2C]">
                   <div className="flex items-center gap-2 text-[#1B4332] dark:text-[#74C69D]">

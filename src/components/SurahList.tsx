@@ -97,7 +97,7 @@ export const SurahList: React.FC<SurahListProps> = ({
       </div>
 
       {/* Surah Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {filteredSurahs.map((surah) => {
           const isBookmarked = bookmarkedSurahs.includes(surah.number);
           const isLastRead = lastReadSurah === surah.number;
@@ -106,35 +106,35 @@ export const SurahList: React.FC<SurahListProps> = ({
             <div
               key={surah.number}
               onClick={() => onSelectSurah(surah.number)}
-              className={`soft-card p-4 flex items-center justify-between cursor-pointer group hover:border-[#2D6A4F] relative overflow-hidden transition-all ${
+              className={`soft-card p-3.5 sm:p-4 flex items-center justify-between cursor-pointer group hover:border-[#2D6A4F] relative overflow-hidden transition-all gap-2 ${
                 isLastRead ? "ring-2 ring-[#2D6A4F] dark:ring-[#52B788] bg-emerald-50/40 dark:bg-[#162D22]" : ""
               }`}
             >
               {isLastRead && (
-                <div className="absolute top-0 right-0 bg-[#2D6A4F] text-white text-[10px] px-2 py-0.5 rounded-bl-lg font-medium flex items-center gap-1">
+                <div className="absolute top-0 right-0 bg-[#2D6A4F] text-white text-[9px] sm:text-[10px] px-2 py-0.5 rounded-bl-lg font-medium flex items-center gap-1 z-10">
                   <CheckCircle2 className="w-3 h-3" /> Terakhir Dibaca
                 </div>
               )}
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 min-w-0">
                 {/* Surah Number Badge */}
-                <div className="w-11 h-11 rounded-2xl bg-[#FAF8F5] dark:bg-[#1E3A2C] border border-[#E2E8F0] dark:border-[#2A4D3A] flex items-center justify-center font-bold text-sm text-[#1B4332] dark:text-[#74C69D] group-hover:bg-[#1B4332] group-hover:text-white transition-colors shadow-xs">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#FAF8F5] dark:bg-[#1E3A2C] border border-[#E2E8F0] dark:border-[#2A4D3A] flex items-center justify-center font-bold text-xs sm:text-sm text-[#1B4332] dark:text-[#74C69D] group-hover:bg-[#1B4332] group-hover:text-white transition-colors shadow-xs shrink-0">
                   {surah.number}
                 </div>
 
                 {/* Surah Info */}
-                <div>
-                  <h3 className="font-bold text-slate-800 dark:text-slate-100 group-hover:text-[#1B4332] dark:group-hover:text-[#74C69D] transition-colors flex items-center gap-2">
+                <div className="min-w-0">
+                  <h3 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-[#1B4332] dark:group-hover:text-[#74C69D] transition-colors truncate">
                     {surah.transliteration}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                     {surah.translationId} • <span className="font-medium text-slate-600 dark:text-slate-300">{surah.totalAyahs} Ayat</span>
                   </p>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1E3A2C] text-slate-600 dark:text-slate-300 font-medium">
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1E3A2C] text-slate-600 dark:text-slate-300 font-medium">
                       {surah.type}
                     </span>
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                    <span className="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500">
                       Juz {surah.juzStart}
                     </span>
                   </div>
@@ -142,8 +142,8 @@ export const SurahList: React.FC<SurahListProps> = ({
               </div>
 
               {/* Right Side: Arabic Name & Bookmark */}
-              <div className="flex flex-col items-end gap-2">
-                <span className="font-arabic text-2xl font-bold text-[#1B4332] dark:text-[#74C69D] tracking-wide">
+              <div className="flex flex-col items-end gap-1 shrink-0">
+                <span className="font-arabic text-xl sm:text-2xl font-bold text-[#1B4332] dark:text-[#74C69D] tracking-wide">
                   {surah.name}
                 </span>
                 <button

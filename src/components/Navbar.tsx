@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { BookOpen, Target, FileSpreadsheet, Sparkles, Moon, Sun, Search, BookMarked, SunMoon, Radio, Download } from "lucide-react";
+import React, { useState } from "react";
+import { BookOpen, Target, FileSpreadsheet, Sparkles, Moon, Sun, Search, BookMarked, SunMoon, Radio, Download, X } from "lucide-react";
 
 interface NavbarProps {
   activeTab: "reader" | "odoj" | "tahsin" | "tajweed" | "journal" | "dzikir" | "adzan";
@@ -22,29 +22,31 @@ export const Navbar: React.FC<NavbarProps> = ({
   darkMode,
   setDarkMode,
 }) => {
+  const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
+
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-[#0B1510]/90 border-b border-emerald-100/90 dark:border-[#1E3A2C] transition-colors shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           
           {/* Logo Brand */}
           <div 
             onClick={() => setActiveTab("reader")}
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group select-none"
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#0F5132] to-[#1B4332] dark:from-[#2D6A4F] dark:to-[#52B788] flex items-center justify-center text-white shadow-md shadow-[#0F5132]/20 group-hover:scale-105 transition-transform">
-              <span className="font-arabic text-2xl font-bold leading-none mt-1">قلبي</span>
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#0F5132] to-[#1B4332] dark:from-[#2D6A4F] dark:to-[#52B788] flex items-center justify-center text-white shadow-md shadow-[#0F5132]/20 group-hover:scale-105 transition-transform">
+              <span className="font-arabic text-xl sm:text-2xl font-bold leading-none mt-0.5 sm:mt-1">قلبي</span>
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-bold tracking-tight text-[#0F5132] dark:text-[#74C69D]">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-lg sm:text-xl font-bold tracking-tight text-[#0F5132] dark:text-[#74C69D]">
                   Qalbi
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[#E8F5E9] text-[#0F5132] dark:bg-[#1E3A2C] dark:text-[#95D5B2] border border-[#2D6A4F]/20">
+                <span className="text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-bold bg-[#E8F5E9] text-[#0F5132] dark:bg-[#1E3A2C] dark:text-[#95D5B2] border border-[#2D6A4F]/20">
                   Al-Quran
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium hidden xs:block">
                 Peace for your heart & voice
               </p>
             </div>
@@ -141,7 +143,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Controls: Search, Theme & PWA Install Button */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
+            {/* Theme Dark/Light Toggle Button */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-[#1E3A2C] border border-slate-200 dark:border-[#2A4D3A] text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-[#2A4D3A] transition-colors shrink-0 shadow-2xs"
+              title={darkMode ? "Ganti ke Mode Terang (Light Mode)" : "Ganti ke Mode Gelap (Dark Mode)"}
+            >
+              {darkMode ? (
+                <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 fill-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+              )}
+            </button>
+
+            {/* Mobile Search Toggle Icon */}
+            <button
+              onClick={() => setShowMobileSearch(!showMobileSearch)}
+              className="sm:hidden p-2 rounded-xl bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] text-slate-600 dark:text-slate-300 shrink-0"
+              title="Cari Surah / Juz"
+            >
+              {showMobileSearch ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+            </button>
+
+            {/* Desktop Search Input */}
             <div className="relative hidden sm:block">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
@@ -160,31 +185,40 @@ export const Navbar: React.FC<NavbarProps> = ({
                   window.dispatchEvent(new CustomEvent("open-pwa-install"));
                 }
               }}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-[#0F5132] to-[#1B4332] text-white hover:opacity-95 transition-all text-xs font-bold shadow-xs active:scale-95 shrink-0"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#0F5132] to-[#1B4332] text-white hover:opacity-95 transition-all text-xs font-bold shadow-xs active:scale-95 shrink-0"
               title="Install Aplikasi Qalbi (PWA)"
             >
-              <Download className="w-4 h-4 text-amber-300" />
+              <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300" />
               <span className="hidden sm:inline">Install App</span>
-            </button>
-
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-xl bg-white dark:bg-[#12221A] border border-slate-200 dark:border-[#1E3A2C] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E3A2C] transition-colors"
-              title={darkMode ? "Switch to Light Theme" : "Switch to Ambient Dark Theme"}
-            >
-              {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
             </button>
           </div>
 
         </div>
+
+        {/* Mobile Dropdown Search Input */}
+        {showMobileSearch && (
+          <div className="sm:hidden pb-3 pt-1">
+            <div className="relative w-full">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari Surah, Juz (cth: Yasin, Kahf)..."
+                className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-[#FAF8F5] dark:bg-[#1E3A2C] border border-emerald-200 dark:border-[#2A4D3A] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] text-slate-800 dark:text-slate-200"
+                autoFocus
+              />
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Mobile Bottom Navigation Bar */}
-      <div className="xl:hidden flex items-center justify-around bg-white/95 dark:bg-[#12221A]/95 border-t border-slate-200 dark:border-[#1E3A2C] py-2 px-1 fixed bottom-0 left-0 right-0 z-50 shadow-lg backdrop-blur-md">
+      {/* Mobile Bottom Navigation Bar (7 Tabs Scrollable with Safe Area) */}
+      <div className="xl:hidden flex items-center gap-1 overflow-x-auto scrollbar-none bg-white/95 dark:bg-[#12221A]/95 border-t border-slate-200 dark:border-[#1E3A2C] py-2 px-2 fixed bottom-0 left-0 right-0 z-50 shadow-lg backdrop-blur-md pb-safe">
         <button
           onClick={() => setActiveTab("reader")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "reader" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "reader" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -193,18 +227,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <button
           onClick={() => setActiveTab("odoj")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "odoj" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "odoj" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
-          <Target className="w-4 h-4" />
+          <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <span>ODOJ</span>
         </button>
 
         <button
           onClick={() => setActiveTab("adzan")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "adzan" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "adzan" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
           <Radio className="w-4 h-4 text-amber-500 animate-pulse" />
@@ -213,34 +247,55 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <button
           onClick={() => setActiveTab("dzikir")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "dzikir" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "dzikir" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
-          <SunMoon className="w-4 h-4" />
+          <SunMoon className="w-4 h-4 text-indigo-400" />
           <span>Dzikir</span>
         </button>
 
         <button
           onClick={() => setActiveTab("journal")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "journal" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "journal" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
-          <BookMarked className="w-4 h-4" />
+          <BookMarked className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
           <span>Jurnal</span>
         </button>
 
         <button
           onClick={() => setActiveTab("tahsin")}
-          className={`flex flex-col items-center gap-1 p-1 rounded-lg text-[10px] ${
-            activeTab === "tahsin" ? "text-[#1B4332] dark:text-[#74C69D] font-bold" : "text-slate-500"
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "tahsin" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
           }`}
         >
-          <FileSpreadsheet className="w-4 h-4" />
+          <FileSpreadsheet className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           <span>Tahsin</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("tajweed")}
+          className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[56px] transition-colors ${
+            activeTab === "tajweed" ? "text-[#1B4332] dark:text-[#74C69D] bg-emerald-50 dark:bg-[#1E3A2C] font-bold" : "text-slate-500"
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-teal-500" />
+          <span>Tajwid</span>
+        </button>
+
+        {/* Dedicated Mobile Theme Toggle Button */}
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl text-[10px] shrink-0 min-w-[58px] transition-all bg-amber-100/80 dark:bg-[#1E3A2C] border border-amber-300/80 dark:border-[#2A4D3A] text-amber-900 dark:text-amber-300 font-bold active:scale-95 shadow-2xs"
+          title={darkMode ? "Ganti ke Mode Terang (Light Mode)" : "Ganti ke Mode Gelap (Dark Mode)"}
+        >
+          {darkMode ? <Sun className="w-4 h-4 text-amber-400 fill-amber-400" /> : <Moon className="w-4 h-4 text-amber-700" />}
+          <span>{darkMode ? "Terang" : "Gelap"}</span>
         </button>
       </div>
     </header>
   );
 };
+
